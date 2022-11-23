@@ -1,40 +1,40 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import NSFW from "./api/nsfw/nsfw-api";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Button, Image, Platform } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+
+import API from "./api/api";
 
 export default function App() {
-  const [apiVersion, setVersion] = useState('none')
-  const [result, setResult] = useState([])
-  
-  NSFW.getVersion()
-    .then(ver => setVersion(ver))
-    .catch(err => console.error(err))
+  const [image, setImage] = useState(null);
 
-  function checkResult() {
-    NSFW.checkImageUrl()
-      .then(res => setResult(res))
-      .catch(err => console.error(err))
+  function analyzeImage() {
+    API.analyzeImageUrl()
   }
+
+  async function pickImage() {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
   
   return (
     <View style={styles.container}>
-      <Text>nsfw api version: {apiVersion}</Text>
       <StatusBar style="auto" />
-      <Button title='check result' onPress={ () => checkResult() }/>
+      <Button title='analyze' onPress={ () => analyzeImage() }/>
 
-      {
-        result.map((res, index) => (
-          <View key={index}>
-            <Text>code: {res.code}</Text>
-            <Text>msg: {res.message}</Text>
-            <Text>name: {res.relatedTo}</Text>
-            <Text>md5: {res.md5}</Text>
-            <Text>nsfw: {res.nsfw}</Text>
-            <Text>sfw: {res.sfw}</Text>
-          </View>
-        ))
-      }
+      <Button title="Pick an image from camera roll" onPress={pickImage} />
+      {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
     </View>
   );
 }
