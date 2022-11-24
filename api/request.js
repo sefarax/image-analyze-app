@@ -1,7 +1,7 @@
 import { API, API_KEY } from "@env";
 import axios from 'axios'
 
-const getUrl = (path) => API + path;
+const getUrl = (path) => 'https://' + API + path;
 
 const getHeaders = () => { 
     return {
@@ -27,6 +27,18 @@ export async function request(path, method = 'GET', params = {}) {
             .catch(err => {
                 console.error(`Request ${method}/${path} rejected`);
                 console.error(err);
+                if (err.response) {
+                    console.error('Request made but the server responded with an error');
+                    console.log(err.response.data);
+                    console.log(err.response.status);
+                    console.log(err.response.headers);
+                } else if (err.request) {
+                    console.error('Request made but no response is received from the server');
+                    console.log(err.request);
+                } else {
+                    console.error('Error occured while setting up the request');
+                    console.log('Error', err.message);
+                }
                 reject(err)
             })
     });

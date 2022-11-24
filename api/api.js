@@ -7,14 +7,23 @@ class API {
         console.debug('created API class instance');
     }
 
-    async analyzeImageUrl(imageUrl = 'https://zooart.com.pl/blog/wp-content/uploads/2020/06/kapibara.jpeg') {
+    async analyzeImageUrl(imageUrl) {
         const options = {
             params: { language: 'en' },
             data: { url: imageUrl }
         };
 
-        let res = await postReq(path.analyze, options)
-        console.log(res)
+        let res = await postReq(path.analyze, options);
+        console.log(res);
+    }
+
+    async describeImageUrl(imageUrl, maxDescribes = '1') {
+        const options = {
+            params: { language: 'en', maxCandidates: maxDescribes },
+            data: { url: imageUrl }
+        };
+        let res = await postReq(path.describe, options);
+        console.log(res);
     }
 }
 
