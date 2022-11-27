@@ -1,3 +1,4 @@
+import { DescribeResponse } from "./api.types";
 import path from "./paths";
 import { postReq } from './request';
 
@@ -7,7 +8,7 @@ class API {
         console.debug('created API class instance');
     }
 
-    async analyzeImageUrl(imageUrl) {
+    async analyzeImageUrl(imageUrl: string) {
         const options = {
             params: { language: 'en' },
             data: { url: imageUrl }
@@ -17,13 +18,15 @@ class API {
         console.log(res);
     }
 
-    async describeImageUrl(imageUrl, maxDescribes = '1') {
+    async describeImageUrl(imageUrl: string): Promise<DescribeResponse> {
         const options = {
-            params: { language: 'en', maxCandidates: maxDescribes },
+            params: { language: 'en', maxCandidates: '1' },
             data: { url: imageUrl }
         };
+        
         let res = await postReq(path.describe, options);
-        console.log(res);
+        console.debug('Received image description');        
+        return res.data;
     }
 }
 
