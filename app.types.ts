@@ -7,3 +7,5 @@ export interface Caption {
     confidence: number;
     text: string;
 }
+
+export type ReturnState = (prevState: any) => any

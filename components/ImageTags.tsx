@@ -1,18 +1,11 @@
-import { ImageDescription } from "../app.types";
 import { StyleSheet, View, Text } from "react-native";
-import { useEffect } from "react";
 
 
-export interface ImageDescProps {
-    description: ImageDescription
+export interface ImageTagsProps {
+    tags: string[];
 }
 
-const ImageDesc: React.FC<ImageDescProps> = ({ description = null }) => {
-    const tags = description.tags;
-
-    useEffect(() => {
-        console.log(description)
-    })
+const ImageTags: React.FC<ImageTagsProps> = ({ tags = [] }) => {
 
     const renderTag = (tag: string) => (
         <View style={styles.tag}>
@@ -21,9 +14,7 @@ const ImageDesc: React.FC<ImageDescProps> = ({ description = null }) => {
     )
 
     return (
-
         <View style={styles.container}>
-
             <View style={styles.tagsContainer}>
                 { tags.map(tag => renderTag(tag)) }
             </View>
@@ -53,4 +44,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default ImageDesc;
+export default ImageTags;

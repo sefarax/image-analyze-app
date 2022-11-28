@@ -1,17 +1,24 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Button, StatusBar, Image } from "react-native";
+import { StyleSheet, View, Image, Text } from "react-native";
+import AppButton from "./common/AppButton";
 
 import * as ExpoImagePicker from 'expo-image-picker';
+import { ReturnState } from "../app.types";
 
 export interface ImagePickerProps {
-    imageHandler: (imgUrl: string) => void
+    imageHandler: ReturnState;
+    disabled?: boolean;
 }
 
-const ImagePicker: React.FC<ImagePickerProps> = ({ imageHandler }) => {
+const ImagePicker: React.FC<ImagePickerProps> = ({ imageHandler, disabled = false }) => {
     const imageUrl = 'https://zooart.com.pl/blog/wp-content/uploads/2020/06/kapibara.jpeg'
     const [image, setImage] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const isDisabled = () => loading || disabled;
 
     async function pickImage() {
+        setLoading(true);
         // No permissions request is necessary for launching the image library
         let result = await ExpoImagePicker.launchImageLibraryAsync({
             mediaTypes: ExpoImagePicker.MediaTypeOptions.All,
@@ -20,27 +27,49 @@ const ImagePicker: React.FC<ImagePickerProps> = ({ imageHandler }) => {
             quality: 1,
         });
 
-        console.log(result);
-
         if (!result.canceled) {
             setImage(result.assets[0].uri);
             imageHandler(imageUrl);
         }
+        setLoading(false);
     };
   
+    function renderImage() {
+        if(image) { return (
+            <Image source={{ uri: image }} style={styles.image} />
+        )}
+        return (
+            <Text>Select Image</Text>
+        )
+    }
+
     return (
         <View style={styles.container}>
-        <StatusBar style="auto" />
-
-        <Button title="Pick an image from camera roll" onPress={pickImage} />
-        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+            <View style={styles.imageBox}>{ renderImage() }</View>
+            <View style={styles.imageActionBox}>
+                <AppButton title="Pick an image from camera roll" onPress={pickImage} disabled={isDisabled()}/>
+            </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-
+        flex: 1
+    },
+    imageBox: {
+        flex: 2,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    image: {
+        width: 400,
+        height: 300
+    },
+    imageActionBox: {
+        height: 100,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 
