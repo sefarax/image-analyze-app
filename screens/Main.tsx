@@ -9,10 +9,17 @@ import AppButton from "../components/common/AppButton";
 
 const MainScreen = () => {
   const navigation = useNavigation<NavigationParams>();
-  const [imageUrl, setImageUrl] = useState(null);
-  const [loading, setLoading] = useState(false);  
+  const [imageUri, setImageUri] = useState(null);
+  const [loading, setLoading] = useState(false); 
+  
+  async function onImage(uri) {
+    setImageUri(uri);
+
+ 
+  }
 
   async function describeImage() {
+    const imageUrl = 'https://zooart.com.pl/blog/wp-content/uploads/2020/06/kapibara.jpeg'
     setLoading(true);
     try {
       let res = await API.describeImageUrl(imageUrl);
@@ -28,10 +35,10 @@ const MainScreen = () => {
     <View style={styles.container}>
       <View style={styles.topBox}></View>
       <View style={styles.middleBox}>
-        <ImagePicker imageHandler={setImageUrl} disabled={loading}/>
+        <ImagePicker imageHandler={onImage} disabled={loading}/>
       </View>
       <View style={styles.bottomBox}>
-        <AppButton title="Request image info" onPress={describeImage} disabled={loading} visible={imageUrl}/>
+        <AppButton title="Request image info" onPress={describeImage} disabled={loading} visible={imageUri}/>
       </View>
     </View>
   )
@@ -50,7 +57,7 @@ const styles = StyleSheet.create({
   bottomBox: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'flex-start'
   }
 });
 

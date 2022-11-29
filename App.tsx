@@ -1,3 +1,4 @@
+import 'expo-asset';
 import 'expo-dev-menu';
 import React from 'react';
 import { StyleSheet, View, SafeAreaView } from 'react-native';

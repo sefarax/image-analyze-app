@@ -11,7 +11,6 @@ export interface ImagePickerProps {
 }
 
 const ImagePicker: React.FC<ImagePickerProps> = ({ imageHandler, disabled = false }) => {
-    const imageUrl = 'https://zooart.com.pl/blog/wp-content/uploads/2020/06/kapibara.jpeg'
     const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -28,8 +27,9 @@ const ImagePicker: React.FC<ImagePickerProps> = ({ imageHandler, disabled = fals
         });
 
         if (!result.canceled) {
-            setImage(result.assets[0].uri);
-            imageHandler(imageUrl);
+            const uri = result.assets[0].uri
+            setImage(uri);
+            imageHandler(uri);
         }
         setLoading(false);
     };

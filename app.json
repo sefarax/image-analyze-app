@@ -2,7 +2,13 @@
   "expo": {
     "slug": "react-native-app",
     "name": "react-native-app",
-    "sdkVersion": "47.0.0"
+    "sdkVersion": "47.0.0",
+    "android": {
+      "package": "com.stantsu.reactnativeapp"
+    },
+    "ios": {
+      "bundleIdentifier": "com.stantsu.reactnativeapp"
+    }
   },
   "name": "react-native-app"
 }
