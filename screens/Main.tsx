@@ -14,7 +14,8 @@ const MainScreen = () => {
   
   async function onImage(uri) {
     setImageUri(uri);
-
+    console.log(imageUri);
+    
  
   }
 

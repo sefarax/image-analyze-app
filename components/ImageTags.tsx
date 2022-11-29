@@ -7,7 +7,7 @@ export interface ImageTagsProps {
 
 const ImageTags: React.FC<ImageTagsProps> = ({ tags = [] }) => {
 
-    const renderTag = (tag: string) => (
+    const renderTag = (tag: string, index: number) => (
         <View style={styles.tag}>
             <Text>{ tag }</Text>
         </View>
@@ -15,9 +15,7 @@ const ImageTags: React.FC<ImageTagsProps> = ({ tags = [] }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.tagsContainer}>
-                { tags.map(tag => renderTag(tag)) }
-            </View>
+            { tags.map((tag, index) => renderTag(tag, index)) }
         </View>
     )
 }
@@ -25,15 +23,11 @@ const ImageTags: React.FC<ImageTagsProps> = ({ tags = [] }) => {
 
 const styles = StyleSheet.create({
     container: {
-      flexDirection: 'column'
-    },
-    tagsContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        padding: 10
+        paddingVertical: 10
     },
     tag: {
-        backgroundColor: 'aqua',
         textAlign: 'center',
         borderColor: 'black',
         borderRadius: 10,

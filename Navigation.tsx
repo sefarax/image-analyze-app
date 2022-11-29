@@ -20,7 +20,7 @@ export default function Navigation() {
         <RootStack.Navigator initialRouteName="Main">
           <RootStack.Screen name="Main" component={MainScreen} options={{headerShown: false}}/>
           <RootStack.Group screenOptions={{ presentation: "modal" }}>
-            <RootStack.Screen name="ImageDesc" component={ImageDescScreen}/>
+            <RootStack.Screen name="ImageDesc" component={ImageDescScreen} options={{ headerTitle: "Result" }}/>
           </RootStack.Group>
         </RootStack.Navigator>
     </NavigationContainer>
