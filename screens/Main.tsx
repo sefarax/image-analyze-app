@@ -1,11 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ImageBackground, Dimensions } from "react-native";
+
+import {BlurView} from '@react-native-community/blur';
 
 import API from "./../api/api";
 import ImagePicker from "../components/ImagePicker";
 import { NavigationParams } from "../Navigation";
 import AppButton from "../components/common/AppButton";
+
+const {width, height} = Dimensions.get('window');
 
 const MainScreen = () => {
   const navigation = useNavigation<NavigationParams>();
@@ -14,7 +18,7 @@ const MainScreen = () => {
   
   async function onImage(uri) {
     setImageUri(uri);
-    console.log(imageUri);
+    console.log('image uri: ' + imageUri);
     
  
   }
@@ -34,6 +38,16 @@ const MainScreen = () => {
 
   return (
     <View style={styles.container}>
+      { imageUri &&
+        <ImageBackground style={[styles.containerStyle, styles.blur]} source={{uri: imageUri}}>
+            <BlurView
+              style={styles.containerStyle}
+              blurType="light"
+              blurAmount={25}
+              reducedTransparencyFallbackColor="white"
+            />
+        </ImageBackground>
+      }
       <View style={styles.topBox}></View>
       <View style={styles.middleBox}>
         <ImagePicker imageHandler={onImage} disabled={loading}/>
@@ -59,7 +73,19 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start'
-  }
+  },
+  containerStyle: {
+    height: height * 3,
+    width: width * 3
+  },
+  imageStyle: {
+    height: height * 3,
+    width: width * 3,
+    resizeMode: 'contain',
+  },
+  blur: {
+    ...StyleSheet.absoluteFillObject,
+  },
 });
 
 export default MainScreen;

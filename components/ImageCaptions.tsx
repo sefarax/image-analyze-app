@@ -9,7 +9,7 @@ export interface ImageCaptionsProps {
 const ImageCaptions: React.FC<ImageCaptionsProps> = ({ captions = [] }) => {
 
     const renderCaption = (caption: Caption, index: number) => (
-        <Text style={styles.caption}>{ caption.text }</Text>
+        <Text style={styles.caption} key={index}>{ caption.text }</Text>
     )
 
     return (

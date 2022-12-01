@@ -5,6 +5,7 @@ import AppButton from "./common/AppButton";
 import * as ExpoImagePicker from 'expo-image-picker';
 import { ReturnState } from "../app.types";
 
+
 export interface ImagePickerProps {
     imageHandler: ReturnState;
     disabled?: boolean;

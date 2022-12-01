@@ -8,7 +8,7 @@ export interface ImageTagsProps {
 const ImageTags: React.FC<ImageTagsProps> = ({ tags = [] }) => {
 
     const renderTag = (tag: string, index: number) => (
-        <View style={styles.tag}>
+        <View style={styles.tag} key={index}>
             <Text>{ tag }</Text>
         </View>
     )
