@@ -11,8 +11,14 @@ export interface ImagePickerProps {
     disabled?: boolean;
 }
 
+export interface ImageInfo {
+    uri: string;
+    name: string;
+    type: string;
+}
+
 const ImagePicker: React.FC<ImagePickerProps> = ({ imageHandler, disabled = false }) => {
-    const [image, setImage] = useState(null);
+    const [imageUri, setImageUri] = useState<string>(null);
     const [loading, setLoading] = useState(false);
 
     const isDisabled = () => loading || disabled;
@@ -28,16 +34,21 @@ const ImagePicker: React.FC<ImagePickerProps> = ({ imageHandler, disabled = fals
         });
 
         if (!result.canceled) {
-            const uri = result.assets[0].uri
-            setImage(uri);
-            imageHandler(uri);
+            const imageData = {
+                uri: result.assets[0].uri,
+                name: result.assets[0].fileName ?? "untitled.jpg",
+                type: result.assets[0].type ?? "image/jpeg"
+            }
+
+            setImageUri(imageData.uri);            
+            imageHandler(imageData);
         }
         setLoading(false);
     };
   
     function renderImage() {
-        if(image) { return (
-            <Image source={{ uri: image }} style={styles.image} />
+        if(imageUri) { return (
+            <Image source={{ uri: imageUri }} style={styles.image} />
         )}
         return (
             <Text>Select Image</Text>

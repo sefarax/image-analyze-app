@@ -1,4 +1,4 @@
-import { ImageDescription } from "../app.types";
+import { ImageDescription } from "../../app.types";
 
 export interface DescribeResponse extends ApiResponse {
     description: ImageDescription;

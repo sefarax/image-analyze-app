@@ -1,32 +1,20 @@
-import { API, API_KEY } from "@env";
 import axios, { AxiosRequestConfig, AxiosResponse, Method } from 'axios'
+import { RequestParams } from "./types";
 
-const getUrl = (path) => 'https://' + API + '/' + path;
 
-const getHeaders = () => { 
-    return {
-        'content-type': 'application/json',
-        'X-RapidAPI-Key': API_KEY,
-        'X-RapidAPI-Host': API
-    }
-}
-
-export type RequestParams =  Partial<{ params: {}, data: {} }>
-export async function request(path: string, method: Method = 'GET', params: RequestParams = {}): Promise<AxiosResponse<any>> {
-    const url = getUrl(path);
-    const headers = getHeaders();
+export async function request(url: string, method: Method = 'GET', params: RequestParams = {}): Promise<AxiosResponse<any>> {
     const options: AxiosRequestConfig = {
         method: method,
         url: url,
-        headers: headers,
         params: params.params ?? null,
-        data: params.data ?? null
+        data: params.data ?? null,
+        headers: params.headers ?? {}
     }
     return new Promise((resolve, reject) => {
         axios(options)
             .then(resolve)
             .catch(err => {
-                console.error(`Request ${method}/${path} rejected`);
+                console.error(`Request ${method} ${url} rejected`);
                 console.error(err);
                 if (err.response) {
                     console.error('Request made but the server responded with an error');

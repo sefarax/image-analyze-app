@@ -1,0 +1,1 @@
+export type RequestParams =  Partial<{ params: {}, data: {}, headers: {} }>

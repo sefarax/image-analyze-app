@@ -4,8 +4,9 @@ import { StyleSheet, View, ImageBackground, Dimensions } from "react-native";
 
 import {BlurView} from '@react-native-community/blur';
 
-import API from "./../api/api";
-import ImagePicker from "../components/ImagePicker";
+import MCV from "../api/mcv-api/api";
+import IHS from "../api/ihs-api/api";
+import ImagePicker, { ImageInfo } from "../components/ImagePicker";
 import { NavigationParams } from "../Navigation";
 import AppButton from "../components/common/AppButton";
 
@@ -14,20 +15,31 @@ const {width, height} = Dimensions.get('window');
 const MainScreen = () => {
   const navigation = useNavigation<NavigationParams>();
   const [imageUri, setImageUri] = useState(null);
+  const [imageURL, setImageURL] = useState(null);
   const [loading, setLoading] = useState(false); 
   
-  async function onImage(uri) {
-    setImageUri(uri);
-    console.log('image uri: ' + imageUri);
-    
- 
+  async function onImage(imageData: ImageInfo) {
+    console.log("image selected", imageData);
+
+    setImageUri(imageData.uri);
+    console.log('imageUri', imageUri);
+    IHS.uploadImage(imageData)
+    .catch(console.error)
+    .then((url) => {
+      let fileName = url.replace('./storage/', '');
+      console.log("fileName", fileName);
+      
+      let imageUrl = 'http://77.222.238.14:8080/image/' + fileName;
+      console.log("imageUrl", imageUrl);
+      setImageURL(imageUrl);
+    })
   }
 
   async function describeImage() {
-    const imageUrl = 'https://zooart.com.pl/blog/wp-content/uploads/2020/06/kapibara.jpeg'
+    const testUrl = 'https://zooart.com.pl/blog/wp-content/uploads/2020/06/kapibara.jpeg'
     setLoading(true);
     try {
-      let res = await API.describeImageUrl(imageUrl);
+      let res = await MCV.describeImageUrl(imageURL);
       
       navigation.navigate('ImageDesc', res.description);
     }
