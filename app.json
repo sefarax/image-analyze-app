@@ -11,7 +11,18 @@
     },
     "plugins": [
       "react-native-compressor"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "cb8d51f5-9781-4ff0-b97c-ec3bb0e56692"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/cb8d51f5-9781-4ff0-b97c-ec3bb0e56692"
+    }
   },
   "name": "react-native-app"
 }

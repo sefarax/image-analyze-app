@@ -10,7 +10,7 @@ class API {
     }
 
     async uploadImage(imageData: ImageInfo) {
-        console.log("imageData", imageData);
+        console.log("uploading image to server...");
         
         const result = await Image.compress(imageData.uri, {
             compressionMethod: 'auto',
@@ -18,7 +18,7 @@ class API {
 
         imageData.uri = result
 
-        console.log("compressed image", imageData);
+        console.log("image compressed", imageData);
         
 
         let formData = new FormData();
@@ -30,7 +30,8 @@ class API {
 
         let res = await postReq(`http://${IMAGE_HOST}/image`, {
             headers: { 'Content-Type': 'multipart/form-data' },
-            data: formData
+            data: formData,
+            timeout: 5000
         })
         let fileName = res.data.replace('./storage/', '');
         let url = `http://${IMAGE_HOST}/image/${fileName}`

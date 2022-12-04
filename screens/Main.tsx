@@ -20,16 +20,17 @@ const MainScreen = () => {
   
   async function onImage(imageData: ImageInfo) {
     console.log("image selected", imageData);
-
     setImageUri(imageData.uri);
-    console.log('imageUri', imageUri);
+    setLoading(true);
     IHS.uploadImage(imageData)
-    .catch(console.error)
-    .then((url) => {
-      
-      console.log("fileUrl", url);
-      setImageURL(url);
-    })
+      .then((url) => {
+        console.log("fileUrl", url);
+        setImageURL(url);
+      })
+      .catch(console.error)
+      .finally(() => {
+        setLoading(false);
+      })
   }
 
   async function describeImage() {
@@ -62,7 +63,7 @@ const MainScreen = () => {
         <ImagePicker imageHandler={onImage} disabled={loading}/>
       </View>
       <View style={styles.bottomBox}>
-        <AppButton title="Request image info" onPress={describeImage} disabled={loading} visible={imageUri}/>
+        <AppButton title="Request image info" onPress={describeImage} disabled={loading} visible={imageURL}/>
       </View>
     </View>
   )

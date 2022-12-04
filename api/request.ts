@@ -1,6 +1,11 @@
-import axios, { AxiosRequestConfig, AxiosResponse, Method } from 'axios'
-import { RequestParams } from "./types";
+import axios, { AxiosRequestConfig, AxiosResponse, Method } from 'axios';
 
+export type RequestParams =  Partial<{ 
+    params: {};
+    data: {};
+    headers: {};
+    timeout: number;
+}>
 
 export async function request(url: string, method: Method = 'GET', params: RequestParams = {}): Promise<AxiosResponse<any>> {
     const options: AxiosRequestConfig = {
@@ -8,7 +13,8 @@ export async function request(url: string, method: Method = 'GET', params: Reque
         url: url,
         params: params.params ?? null,
         data: params.data ?? null,
-        headers: params.headers ?? {}
+        headers: params.headers ?? {},
+        timeout: params.timeout ?? undefined
     }
     return new Promise((resolve, reject) => {
         axios(options)

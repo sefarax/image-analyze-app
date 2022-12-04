@@ -1,5 +1,6 @@
 import 'expo-asset';
 import 'expo-dev-menu';
+import 'expo-dev-client';
 import React from 'react';
 import { StyleSheet, View, SafeAreaView } from 'react-native';
 import RootStack from "./Navigation";
