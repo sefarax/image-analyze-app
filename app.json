@@ -8,7 +8,10 @@
     },
     "ios": {
       "bundleIdentifier": "com.stantsu.reactnativeapp"
-    }
+    },
+    "plugins": [
+      "react-native-compressor"
+    ]
   },
   "name": "react-native-app"
 }

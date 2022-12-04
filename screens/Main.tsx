@@ -4,8 +4,8 @@ import { StyleSheet, View, ImageBackground, Dimensions } from "react-native";
 
 import {BlurView} from '@react-native-community/blur';
 
-import MCV from "../api/mcv-api/api";
-import IHS from "../api/ihs-api/api";
+import MCV from "../api/ms-computer-vision/api";
+import IHS from "../api/image-hosting/api";
 import ImagePicker, { ImageInfo } from "../components/ImagePicker";
 import { NavigationParams } from "../Navigation";
 import AppButton from "../components/common/AppButton";
@@ -26,12 +26,9 @@ const MainScreen = () => {
     IHS.uploadImage(imageData)
     .catch(console.error)
     .then((url) => {
-      let fileName = url.replace('./storage/', '');
-      console.log("fileName", fileName);
       
-      let imageUrl = 'http://77.222.238.14:8080/image/' + fileName;
-      console.log("imageUrl", imageUrl);
-      setImageURL(imageUrl);
+      console.log("fileUrl", url);
+      setImageURL(url);
     })
   }
 

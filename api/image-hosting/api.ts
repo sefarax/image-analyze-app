@@ -1,6 +1,7 @@
 import { postReq } from "../request";
 import { ImageInfo } from "../../components/ImagePicker";
-
+import { IMAGE_HOST } from "@env";
+import { Image } from 'react-native-compressor';
 
 
 class API {
@@ -9,7 +10,16 @@ class API {
     }
 
     async uploadImage(imageData: ImageInfo) {
-        console.log("imageData", imageData);        
+        console.log("imageData", imageData);
+        
+        const result = await Image.compress(imageData.uri, {
+            compressionMethod: 'auto',
+        });
+
+        imageData.uri = result
+
+        console.log("compressed image", imageData);
+        
 
         let formData = new FormData();
         formData.append("file", {
@@ -18,12 +28,13 @@ class API {
             type: imageData.type
         } as any);
 
-        let res = await postReq('http://localhost:8080/image', {
+        let res = await postReq(`http://${IMAGE_HOST}/image`, {
             headers: { 'Content-Type': 'multipart/form-data' },
             data: formData
         })
-        
-        return res.data;        
+        let fileName = res.data.replace('./storage/', '');
+        let url = `http://${IMAGE_HOST}/image/${fileName}`
+        return url;        
     }
 }
 
