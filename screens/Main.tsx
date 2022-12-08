@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { StyleSheet, View, ImageBackground, Dimensions } from "react-native";
+import { StyleSheet, View, ImageBackground, Dimensions, Alert, SafeAreaView, Text, TouchableOpacity } from "react-native";
 
 import {BlurView} from '@react-native-community/blur';
 
@@ -9,10 +9,12 @@ import IHS from "../api/image-hosting/api";
 import ImagePicker, { ImageInfo } from "../components/ImagePicker";
 import { NavigationParams } from "../Navigation";
 import AppButton from "../components/common/AppButton";
+import { AxiosError } from "axios";
+import { IonIcon } from "../shared/icons";
 
 const {width, height} = Dimensions.get('window');
 
-const MainScreen = () => {
+const MainScreen: React.FC = () => {
   const navigation = useNavigation<NavigationParams>();
   const [imageUri, setImageUri] = useState(null);
   const [imageURL, setImageURL] = useState(null);
@@ -27,7 +29,7 @@ const MainScreen = () => {
         console.log("fileUrl", url);
         setImageURL(url);
       })
-      .catch(console.error)
+      .catch(err => showError(err))
       .finally(() => {
         setLoading(false);
       })
@@ -36,18 +38,26 @@ const MainScreen = () => {
   async function describeImage() {
     const testUrl = 'https://zooart.com.pl/blog/wp-content/uploads/2020/06/kapibara.jpeg'
     setLoading(true);
-    try {
-      let res = await MCV.describeImageUrl(imageURL);
-      
-      navigation.navigate('ImageDesc', res.description);
-    }
-    finally {
-      setLoading(false);
-    }
+    MCV.describeImageUrl(imageURL)
+      .then(res => navigation.navigate('ImageDesc', res.description))
+      .catch(err => showError(err))
+      .finally(() => setLoading(false));
   }
+
+  function showError(err: AxiosError) {
+    let text = "Something went wrong";
+    if(err.code === "ECONNABORTED") text = "Server is not responding";
+
+    Alert.alert("Oops", text + "\nPlease try again later", [
+      { text: "Close", onPress: () => console.log("extra error data", err) }
+    ]);
+  } 
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.infoBtn} onPress={() => navigation.navigate("Info")}>
+          <IonIcon name="information-circle-outline" size={36} color="black" style={styles.topBox}/>
+      </TouchableOpacity>
       { imageUri &&
         <ImageBackground style={[styles.containerStyle, styles.blur]} source={{uri: imageUri}}>
             <BlurView
@@ -58,7 +68,7 @@ const MainScreen = () => {
             />
         </ImageBackground>
       }
-      <View style={styles.topBox}></View>
+      <SafeAreaView style={styles.topBox}></SafeAreaView>
       <View style={styles.middleBox}>
         <ImagePicker imageHandler={onImage} disabled={loading}/>
       </View>
@@ -74,10 +84,10 @@ const styles = StyleSheet.create({
     flex: 1
   },
   topBox: {
-    flex: 1
+    flex: 1,
   },
   middleBox: {
-    flex: 2
+    flex: 3
   },
   bottomBox: {
     flex: 1,
@@ -96,6 +106,12 @@ const styles = StyleSheet.create({
   blur: {
     ...StyleSheet.absoluteFillObject,
   },
+  infoBtn: {
+    position: 'absolute',
+    top: 60,
+    right: 20, 
+    zIndex: 100
+  }
 });
 
 export default MainScreen;
