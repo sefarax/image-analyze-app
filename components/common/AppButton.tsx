@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet, Pressable } from 'react-native';
+import AppLabel from './AppLabel';
 
 interface AppButtonProps {
     onPress?: () => any;
@@ -12,7 +13,7 @@ const AppButton: React.FC<AppButtonProps> = (props) => {
   const { onPress, title = 'Save', disabled = false, visible = true } = props;
   return (visible &&
     <Pressable style={[styles.button, disabled ? styles.disabledButton : {}]} onPress={onPress} disabled={disabled}>
-      <Text style={styles.text}>{title}</Text>
+      <AppLabel text={title} style={styles.text} bold={true}/>
     </Pressable>
   );
 }
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     lineHeight: 21,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'white',
   },

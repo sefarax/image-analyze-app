@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 
 
-const InfoScreen: React.FC = () => {
+const AboutScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
@@ -16,4 +16,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default InfoScreen;
+export default AboutScreen;
