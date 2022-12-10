@@ -7,7 +7,11 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "ios-simulator": "eas build --profile development-simulator --platform ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    
+    "dev-build-android": "eas build --profile development --platform android",
+    "dev-build-ios-sim": "eas build --profile development-simulator --platform ios",
+    "dev-build-ios": "eas build --profile development --platform ios"
   },
   "dependencies": {
     "@expo/webpack-config": "^0.17.2",
