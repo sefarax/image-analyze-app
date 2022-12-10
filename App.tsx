@@ -8,7 +8,6 @@ import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 const getFonts = () => Font.loadAsync({
-  'rubik': require('./assets/fonts/Rubik-VariableFont_wght.ttf'),
   'rubik-regular': require('./assets/fonts/Rubik-Regular.ttf'),
   'rubik-bold': require('./assets/fonts/Rubik-Bold.ttf')
 })
